@@ -99,3 +99,33 @@ var runtimeOpts = {
     memory: '256MB' /* 128MB 256MB 512MB 1GB 2GB */
 };
 
+
+exports.backups = {
+    users: functions.runWith(runtimeOpts).firestore.document('/users/{uid}')
+        .onWrite((change, context) => backup(change, context)),
+
+    usersErrors: functions.runWith(runtimeOpts).firestore.document('/users/{uid}/errors/{errorId}')
+        .onWrite((change, context) => backup(change, context))
+}
+
+async function backup(change, context) {
+
+    try {
+        var bucketURL = "gs://mvp-blockchain-serverless.appspot.com";
+        var bucket = admin.storage().bucket("gs://mvp-blockchain-serverless.appspot.com");
+
+        let filePath = `${change.after.ref.path}/${new Date().toJSON()}.document.json`;
+        let file = bucket.file(filePath);
+
+        await file.save(JSON.stringify(change.after.data()), { contentType: "application/json" });
+
+        console.log({ filePath: filePath, bucket: bucketURL, "status": true });
+        return { filePath: filePath, bucket: bucketURL, "status": true };
+
+    } catch (error) {
+        console.error(error);
+        await change.after.ref.collection('/errors/').add(Object.assign({ "error": error.message }, { type: 'backups' }));
+        console.error(error);
+        return null;
+    }
+}
