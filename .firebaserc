@@ -1,5 +1,29 @@
 {
   "projects": {
     "default": "mvp-blockchain-serverless"
+  },
+  "targets": {
+    "mvp-blockchain-serverless": {
+      "hosting": {
+        "mvp-blockchain-serverless-app": [
+          "mvp-blockchain-serverless-app"
+        ],
+        "mvp-blockchain-serverless-dev": [
+          "mvp-blockchain-serverless-dev"
+        ],
+        "mvp-blockchain-serverless-admin": [
+          "mvp-blockchain-serverless-admin"
+        ],
+        "mvp-blockchain-serverless-blog": [
+          "mvp-blockchain-serverless-blog"
+        ],
+        "mvp-blockchain-serverless-www": [
+          "mvp-blockchain-serverless-www"
+        ],
+        "mvp-blockchain-serverless": [
+          "mvp-blockchain-serverless"
+        ]
+      }
+    }
   }
 }
