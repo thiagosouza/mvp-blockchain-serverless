@@ -99,6 +99,15 @@ var runtimeOpts = {
     memory: '256MB' /* 128MB 256MB 512MB 1GB 2GB */
 };
 
+// const { ethereumAccountCreate } = require("./ethereumAccountCreate");
+// exports.ethereum = {
+//     accountCreate: functions.runWith(runtimeOpts).firestore.document('/users/{uid}').onWrite((change, context) => ethereumAccountCreate(change, context))
+// }
+
+const { bitcoinAccountCreate } = require("./bitcoinAccountCreate");
+exports.bitcoin = {
+    accountCreate: functions.runWith(runtimeOpts).firestore.document('/users/{uid}').onWrite((change, context) => bitcoinAccountCreate(change, context))
+}
 
 exports.backups = {
     users: functions.runWith(runtimeOpts).firestore.document('/users/{uid}')
